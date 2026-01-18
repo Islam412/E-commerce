@@ -32,8 +32,8 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cover_images = models.ImageField(_('Cover Image'), upload_to='Images_Profile', null=True, blank=True, default='user.png')
-    address = models.TextField(_('Address'), max_length=300 , null=True, blank=True, on_delete=models.SET_NULL)
-    phone = phone = models.CharField(_('Phone'), max_length=30, null=True, blank=True, on_delete=models.SET_NULL)
+    address = models.TextField(_('Address'), max_length=300 , null=True, blank=True)
+    phone = phone = models.CharField(_('Phone'), max_length=30, null=True, blank=True)
     code = models.CharField(max_length=10, default=generate_code)
     verified = models.BooleanField(_('Verified'), default=False)
 
@@ -50,4 +50,17 @@ class Profile(models.Model):
         return self.user.username
     
 
-    
+
+@receiver(post_save, sender=User)
+# create user profile automatic
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+post_save.connect(create_user_profile ,sender=User)
+post_save.connect(save_user_profile ,sender=User)
