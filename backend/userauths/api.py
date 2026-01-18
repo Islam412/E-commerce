@@ -32,3 +32,8 @@ class ProfileListAPIView(ListAPIView):
 
 class ProfileCreateAPIView(CreateAPIView):
     serializer_class = ProfileSerializer
+
+
+class ProfileUpdateAPIView(UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UserSerializer
