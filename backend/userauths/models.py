@@ -33,7 +33,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cover_images = models.ImageField(_('Cover Image'), upload_to='Images_Profile', null=True, blank=True, default='user.png')
     address = models.TextField(_('Address'), max_length=300 , null=True, blank=True)
-    phone = phone = models.CharField(_('Phone'), max_length=30, null=True, blank=True)
+    phone = models.CharField(_('Phone'), max_length=30, null=True, blank=True)
     code = models.CharField(max_length=10, default=generate_code)
     verified = models.BooleanField(_('Verified'), default=False)
 
@@ -49,7 +49,6 @@ class Profile(models.Model):
     def username(self):
         return self.user.username
     
-
 
 @receiver(post_save, sender=User)
 # create user profile automatic
