@@ -22,3 +22,7 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'phone', 'address']
     list_filter = ['verified']
     ordering = ['user']
+
+
+admin.site.register(User, UserCustomAdmin)
+admin.site.register(Profile, ProfileAdmin)
