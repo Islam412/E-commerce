@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -151,7 +153,10 @@ MEDIA_ROOT=BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# ------------------------
 # change user Configs
+# ------------------------
 AUTH_USER_MODEL = 'userauths.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -159,3 +164,41 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = ''
 LOGIN_URL = 'userauths:sign-up'
 LOGOUT_REDIRECT_URL = "userauths:sign-up"
+
+
+
+# ------------------------
+# REST Framework settings
+# ------------------------
+REST_FRAMEWORK = {
+    # Enable filtering in API
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+
+    # Authentication classes for API
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT auth
+        'rest_framework.authentication.SessionAuthentication',        # for Admin and browsable API
+        'rest_framework.authentication.BasicAuthentication',          # optional for testing
+    ),
+
+    # Default permission: only authenticated users can access
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # use AllowAny for public API
+    ),
+
+    # Pagination settings
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 30,
+}
+
+# ------------------------
+# JWT Settings
+# ------------------------
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),   # token expires in 60 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),      # refresh token expires in 1 day
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),     # sliding token lifetime
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
