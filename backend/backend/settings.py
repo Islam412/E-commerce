@@ -174,6 +174,9 @@ LOGIN_REDIRECT_URL = ''
 LOGIN_URL = 'userauths:sign-up'
 LOGOUT_REDIRECT_URL = "userauths:sign-up"
 
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 
 # ------------------------
