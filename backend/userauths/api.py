@@ -1,5 +1,5 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView ,CreateAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView ,CreateAPIView, UpdateAPIView, RetrieveAPIView
 
 
 from userauths.serializers import UserSerializer , ProfileSerializer 
@@ -40,3 +40,11 @@ class UpdateMyProfileAPIView(UpdateAPIView):
 
     def get_object(self):
         return Profile.objects.get(user=self.request.user)
+    
+
+class MyAccountAPIView(RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
