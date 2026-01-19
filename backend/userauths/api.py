@@ -9,14 +9,14 @@ from .models import User , Profile
 class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -32,6 +32,7 @@ class ProfileListAPIView(ListAPIView):
 
 class ProfileCreateAPIView(CreateAPIView):
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class UpdateMyProfileAPIView(UpdateAPIView):
