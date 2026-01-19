@@ -34,6 +34,9 @@ class ProfileCreateAPIView(CreateAPIView):
     serializer_class = ProfileSerializer
 
 
-class ProfileUpdateAPIView(UpdateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = UserSerializer
+class UpdateMyProfileAPIView(UpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
