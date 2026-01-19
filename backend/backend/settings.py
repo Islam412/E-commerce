@@ -216,7 +216,9 @@ SIMPLE_JWT = {
 }
 
 
+# ------------------------
 # connect next
+# ------------------------
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
