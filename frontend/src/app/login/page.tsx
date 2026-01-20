@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import RegisterForm from "./LoginForm";
+import LoginForm from "./LoginForm";
 
 function LoginPage() {
   return (
@@ -91,7 +92,7 @@ function LoginPage() {
             },
           }}
         >
-          <RegisterForm />
+          <LoginForm  />
         </Grid>
       </Grid>
     </Container>

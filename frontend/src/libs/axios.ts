@@ -8,10 +8,10 @@ type LoginResponse = {
   data?: any;
 };
 
+const API = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
+
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
 
   providers: [
     CredentialsProvider({
@@ -24,40 +24,31 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const email = credentials?.email;
         const password = credentials?.password;
+        if (!email || !password || !API) return null;
 
-        if (!email || !password) return null;
-
-        // 1️⃣ LOGIN
-        const loginRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}login/`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        // 1) LOGIN
+        const loginRes = await fetch(`${API}/login/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
 
         if (!loginRes.ok) return null;
 
         const loginData: LoginResponse = await loginRes.json();
-
         const accessToken = loginData.token || loginData.access_token;
         if (!accessToken) return null;
 
-        // 2️⃣ USER DATA
+        // 2) USER DATA
         let userData = loginData.user || loginData.data || null;
 
-        // لو الـ login مش بيرجع user
         if (!userData) {
-          const meRes = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}me/`,
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const meRes = await fetch(`${API}/me/`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
 
           if (!meRes.ok) return null;
           userData = await meRes.json();
@@ -83,13 +74,13 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session, token }) {
       (session as any).accessToken = token.accessToken as string;
-      session.user = ((token as any).user ?? null) as any;
+      (session as any).user = (token as any).user ?? null;
       return session;
     },
   },
 
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/login", // ✅ ظبطها حسب صفحتك
   },
 
   secret: process.env.NEXTAUTH_SECRET,

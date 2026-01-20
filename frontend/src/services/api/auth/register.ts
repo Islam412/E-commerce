@@ -17,7 +17,7 @@ export async function registerUser(payload: RegisterValues) {
   formData.append("email", payload.email.toLowerCase()); // ✅ اختياري
   formData.append("password", payload.password);
 
-  const res = await axios.post(apiPath`create/`, formData);
+  const res = await axios.post(apiPath`user/api/create/`, formData);
 
   return res.data;
 }
