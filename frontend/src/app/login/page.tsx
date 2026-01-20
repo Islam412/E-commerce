@@ -1,5 +1,5 @@
+import { Suspense } from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import RegisterForm from "./LoginForm";
 import LoginForm from "./LoginForm";
 
 function LoginPage() {
@@ -19,7 +19,7 @@ function LoginPage() {
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             justifyContent: "center",
-            p: { md: 3, lg: 4 }, // 👈 padding للعمود
+            p: { md: 3, lg: 4 },
           }}
         >
           <Box
@@ -28,16 +28,13 @@ function LoginPage() {
               width: "100%",
               height: "100%",
               minHeight: "calc(100vh - 48px)",
-              borderRadius: 6, // 👈 كارد ناعم
+              borderRadius: 6,
               overflow: "hidden",
               boxShadow: "0 18px 60px rgba(0,0,0,0.25)",
-
               backgroundImage: `url("/images/auth/register.png")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-
-              // Overlay أشيك
               "&::after": {
                 content: '""',
                 position: "absolute",
@@ -47,7 +44,6 @@ function LoginPage() {
               },
             }}
           >
-            {/* Optional Text Overlay */}
             <Box
               sx={{
                 position: "absolute",
@@ -76,7 +72,7 @@ function LoginPage() {
           </Box>
         </Grid>
 
-        {/* Form Section (بدون Box) */}
+        {/* Form Section */}
         <Grid
           size={{ xs: 12, md: 7, lg: 6 }}
           sx={{
@@ -86,13 +82,14 @@ function LoginPage() {
             px: { xs: 2, sm: 4, md: 6 },
             py: { xs: 4, md: 0 },
             backgroundColor: "background.default",
-
             "& > *": {
               transform: { md: "translateY(-10px)" },
             },
           }}
         >
-          <LoginForm  />
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
         </Grid>
       </Grid>
     </Container>

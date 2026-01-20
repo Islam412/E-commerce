@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import RegisterForm from "./LoginForm";
+import { Suspense } from "react";
 
 function LoginPage() {
   return (
@@ -91,7 +92,10 @@ function LoginPage() {
             },
           }}
         >
-          <RegisterForm />
+                    <Suspense fallback={null}>
+                    <RegisterForm />
+
+                    </Suspense>
         </Grid>
       </Grid>
     </Container>
