@@ -122,7 +122,6 @@ export default function LoginForm() {
                 variant="contained"
                 fullWidth
                 loading={isSubmitting}
-                sx={{ height: 52, borderRadius: "999px", fontWeight: 700 }}
 
               >
                 Login

@@ -160,6 +160,7 @@ export default function RegisterForm() {
   type="submit"
   variant="contained"
   fullWidth
+
   loading={registerMutation.isPending}
 >
   Create account

@@ -65,7 +65,7 @@ export default function AppTextField<T extends FieldValues>({
               "& .MuiInputLabel-root": { fontWeight: 600 },
 
               "& .MuiOutlinedInput-root": {
-                borderRadius: 16, // ✅ ناعم زي الصورة
+                borderRadius: 3, // ✅ ناعم زي الصورة
                 backgroundColor: "background.paper",
                 height: 56, // ✅ طول ثابت
                 "& .MuiOutlinedInput-input": {

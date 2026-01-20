@@ -19,7 +19,7 @@ export default function AppButton({
       disabled={disabled || loading}
       sx={{
         height: 52,
-        borderRadius: 14,
+        borderRadius: 3,
         fontWeight: 600,
         textTransform: "none",
         boxShadow: "none",
