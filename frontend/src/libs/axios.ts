@@ -1,10 +1,8 @@
+import { LoginResponse } from "@/types/auth/AppUser";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-type LoginResponse = {
-  access?: string;
-  refresh?: string;
-};
+
 
 const API = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
 
@@ -20,37 +18,32 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        
         const email = credentials?.email;
         const password = credentials?.password;
         if (!email || !password || !API) return null;
-
-        const loginRes = await fetch(`${API}/api/token/`, {
+      
+        const loginRes = await fetch(`${API}/user/api/login/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
-
+      
         if (!loginRes.ok) return null;
-
-        const { access } = (await loginRes.json()) as LoginResponse;
-        if (!access) return null;
-
-        const meRes = await fetch(`${API}/user/api/account/me/`, {
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
-        });
-
-        if (!meRes.ok) return null;
-        const userData = await meRes.json();
-
+      
+        const data = (await loginRes.json()) as LoginResponse;
+      
+        const access = data.access;
+        const userData = data.user;
+      
+        if (!access || !userData) return null;
+      
         return {
           id: String(userData.id),
           token: access,
           userData,
         };
-      },
+      }
+      ,
     }),
   ],
 

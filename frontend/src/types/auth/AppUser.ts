@@ -11,3 +11,10 @@ export type AppUser = {
     user_permissions: string[];
   };
   
+
+  export  type LoginResponse = {
+    user?: AppUser;
+    access?: string;
+    refresh?: string;
+    message?: string;
+  };
