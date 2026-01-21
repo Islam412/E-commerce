@@ -17,5 +17,5 @@ urlpatterns = [
     path('api/profile/update/<pk>/', api.UpdateMyProfileAPIView.as_view(), name='profile_api_update'),
     path('api/account/me/', api.MyAccountAPIView.as_view(), name='my_account_api'),
     path('api/profile/me/', api.MyProfileAPIView.as_view(), name='my_profile_api'),
-    path('api/login/', api.MyProfileAPIView.as_view(), name='login_api'),
+    path('api/login/', api.LoginAPIView.as_view(), name='login_api'),
 ]
