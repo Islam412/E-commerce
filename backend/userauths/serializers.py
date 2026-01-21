@@ -56,18 +56,15 @@ class LoginSerializer(serializers.Serializer):
 
         if email and password:
             try:
-                # ابحث عن المستخدم بالـ email
                 user = User.objects.get(email=email)
             except User.DoesNotExist:
                 msg = _('No user found with this email address.')
                 raise serializers.ValidationError(msg, code='authorization')
             
-            # تحقق من كلمة المرور يدوياً
             if not user.check_password(password):
                 msg = _('Invalid password.')
                 raise serializers.ValidationError(msg, code='authorization')
             
-            # تحقق إذا كان المستخدم نشط
             if not user.is_active:
                 msg = _('User account is disabled.')
                 raise serializers.ValidationError(msg, code='authorization')
