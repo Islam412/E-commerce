@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'dj_rest_auth',
     'allauth',
@@ -218,6 +219,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),      # refresh token expires in 1 day
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),     # sliding token lifetime
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,  # take new refresh 
+    'BLACKLIST_AFTER_ROTATION': True, # put the tokken old at placklist
 }
 
 

@@ -3,7 +3,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView ,C
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken , OutstandingToken , BlacklistedToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 
 from userauths.serializers import UserSerializer , ProfileSerializer , LoginSerializer
@@ -87,25 +88,21 @@ class LoginAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # تحقق من كلمة المرور
         if not user.check_password(password):
             return Response(
                 {"error": "Invalid email or password"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # تحقق إذا كان المستخدم نشط
         if not user.is_active:
             return Response(
                 {"error": "User account is disabled"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Generate JWT tokens
         from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(user)
         
-        # Get user data
         user_serializer = UserSerializer(user)
         
         return Response({
@@ -114,4 +111,34 @@ class LoginAPIView(APIView):
             'access': str(refresh.access_token),
             'message': 'Login successful'
         }, status=status.HTTP_200_OK)
-    
+
+
+ 
+class LogoutAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+
+            if not refresh_token:
+                return Response(
+                    {"error": "Refresh token is required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            token = RefreshToken(refresh_token)
+
+            # Blacklist the refresh token
+            token.blacklist()
+
+            return Response(
+                {"message": "Logout successful"},
+                status=status.HTTP_200_OK
+            )
+
+        except TokenError:
+            return Response(
+                {"error": "Invalid or expired token"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
