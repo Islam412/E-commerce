@@ -19,4 +19,5 @@ urlpatterns = [
     path('api/profile/me/', api.MyProfileAPIView.as_view(), name='my_profile_api'),
     path('api/login/', api.LoginAPIView.as_view(), name='login_api'),
     path("api/logout/", api.LogoutAPIView.as_view(), name="logout"),
+    path("api/account/delete/", api.DeleteMyAccountAPIView.as_view(), name="delete_my_account"),
 ]
