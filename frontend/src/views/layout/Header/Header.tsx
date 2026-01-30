@@ -15,7 +15,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Badge from "@mui/material/Badge";
@@ -75,10 +75,14 @@ export default function Header() {
     borderRadius: 999,
     width: 42,
     height: 42,
-    border: "1px solid rgba(255,255,255,0.18)",
-    backgroundColor: "rgba(255,255,255,0.08)",
-    "&:hover": { backgroundColor: "rgba(255,255,255,0.14)" },
+    border: `1px solid ${alpha(theme.palette.common.white, 0.18)}`,
+    backgroundColor: alpha(theme.palette.common.white, 0.08),
+    "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.14) },
   };
+
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
 
   return (
     <>
@@ -88,9 +92,15 @@ export default function Header() {
         elevation={0}
         sx={{
           color: "primary.contrastText",
-          borderBottom: "1px solid rgba(255,255,255,0.10)",
+          borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.10)}`,
           backdropFilter: "blur(10px)",
-          backgroundImage: "linear-gradient(180deg, rgba(0,31,84,0.95), rgba(0,31,84,0.92))",
+
+          // ✅ بدون ألوان ثابتة — كله من theme
+          backgroundImage: `linear-gradient(
+            180deg,
+            ${alpha(theme.palette.primary.main, 0.96)},
+            ${alpha(theme.palette.primary.main, 0.90)}
+          )`,
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", gap: 2, minHeight: 70 }}>
@@ -121,6 +131,7 @@ export default function Header() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
               {navItems.map((item) => {
                 const active = isActive(item.href);
+
                 return (
                   <Button
                     key={item.href}
@@ -134,8 +145,10 @@ export default function Header() {
                       height: 40,
                       borderRadius: 999,
                       opacity: active ? 1 : 0.92,
-                      backgroundColor: active ? "rgba(255,255,255,0.14)" : "transparent",
-                      "&:hover": { backgroundColor: "rgba(255,255,255,0.14)" },
+
+                      // ✅ Active state من theme (white overlay)
+                      backgroundColor: active ? alpha(theme.palette.common.white, 0.14) : "transparent",
+                      "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.14) },
                     }}
                   >
                     {item.label}
@@ -192,7 +205,7 @@ export default function Header() {
                       borderRadius: 999,
                       px: 2,
                       color: "primary.contrastText",
-                      "&:hover": { backgroundColor: "rgba(255,255,255,0.14)" },
+                      "&:hover": { backgroundColor: alpha(theme.palette.common.white, 0.14) },
                     }}
                   >
                     My Account
@@ -208,16 +221,24 @@ export default function Header() {
                     borderRadius: 999,
                     px: 2.5,
                     fontWeight: 950,
-                    backgroundColor: "rgba(255,255,255,0.92)",
-                    color: "primary.main",
-                    "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
+
+                    // ✅ من theme فقط: زر ثانوي
+                    backgroundColor: theme.palette.background.default,
+                    color: theme.palette.primary.main,
+                    "&:hover": { backgroundColor: alpha(theme.palette.background.paper, 0.92) },
                   }}
                 >
                   Login
                 </AppButton>
               )
             ) : (
-              <IconButton edge="end" onClick={openDrawer} aria-label="menu" color="inherit" sx={iconPillSx}>
+              <IconButton
+                edge="end"
+                onClick={openDrawer}
+                aria-label="menu"
+                color="inherit"
+                sx={iconPillSx}
+              >
                 <MenuIcon />
               </IconButton>
             )}
@@ -233,10 +254,20 @@ export default function Header() {
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Image src="/images/logo/Logo.png" alt="Logo" width={28} height={28} />
-                <Typography sx={{ fontWeight: 950 }}>moveabrand</Typography>
+                <Typography sx={{ fontWeight: 950, color: "text.primary" }}>
+                  moveabrand
+                </Typography>
               </Box>
 
-              <IconButton onClick={closeDrawer} aria-label="close" sx={{ borderRadius: 999 }}>
+              <IconButton
+                onClick={closeDrawer}
+                aria-label="close"
+                sx={{
+                  borderRadius: 999,
+                  backgroundColor: alpha(theme.palette.primary.main, 0.06),
+                  "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.10) },
+                }}
+              >
                 <CloseIcon />
               </IconButton>
             </Box>
@@ -255,7 +286,17 @@ export default function Header() {
                 fullWidth
                 variant="outlined"
                 onClick={() => requireAuthOrToast("/favorites")}
-                sx={{ height: 44, borderRadius: 999, fontWeight: 900 }}
+                sx={{
+                  height: 44,
+                  borderRadius: 999,
+                  fontWeight: 900,
+                  borderColor: alpha(theme.palette.primary.main, 0.25),
+                  color: "primary.main",
+                  "&:hover": {
+                    borderColor: alpha(theme.palette.primary.main, 0.35),
+                    backgroundColor: alpha(theme.palette.primary.main, 0.04),
+                  },
+                }}
               >
                 Favorites ({favCount})
               </AppButton>
@@ -264,7 +305,14 @@ export default function Header() {
                 fullWidth
                 variant="contained"
                 onClick={() => requireAuthOrToast("/cart")}
-                sx={{ height: 44, borderRadius: 999, fontWeight: 950 }}
+                sx={{
+                  height: 44,
+                  borderRadius: 999,
+                  fontWeight: 950,
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.92) },
+                }}
               >
                 Cart ({cartCount})
               </AppButton>
@@ -277,6 +325,7 @@ export default function Header() {
           <List sx={{ py: 1 }}>
             {navItems.map((item) => {
               const active = isActive(item.href);
+
               return (
                 <ListItemButton
                   key={item.href}
@@ -287,13 +336,15 @@ export default function Header() {
                     mx: 1,
                     my: 0.5,
                     borderRadius: 2,
-                    backgroundColor: active ? "rgba(0,31,84,0.06)" : "transparent",
-                    "&:hover": { backgroundColor: "rgba(0,31,84,0.08)" },
+
+                    // ✅ بدون كود لون ثابت
+                    backgroundColor: active ? alpha(theme.palette.primary.main, 0.06) : "transparent",
+                    "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.08) },
                   }}
                 >
                   <ListItemText
                     primary={item.label}
-                    primaryTypographyProps={{ fontWeight: active ? 950 : 800 }}
+                    primaryTypographyProps={{ fontWeight: active ? 950 : 800, color: "text.primary" }}
                   />
                 </ListItemButton>
               );
@@ -312,7 +363,14 @@ export default function Header() {
                   component={NextLinkComposed}
                   href="/account"
                   onClick={closeDrawer}
-                  sx={{ height: 46, borderRadius: 999, fontWeight: 950 }}
+                  sx={{
+                    height: 46,
+                    borderRadius: 999,
+                    fontWeight: 950,
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                    "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.92) },
+                  }}
                 >
                   My Account
                 </AppButton>
@@ -323,7 +381,13 @@ export default function Header() {
                   component={NextLinkComposed}
                   href="/shop"
                   onClick={closeDrawer}
-                  sx={{ height: 46, borderRadius: 999, fontWeight: 900 }}
+                  sx={{
+                    height: 46,
+                    borderRadius: 999,
+                    fontWeight: 900,
+                    color: "primary.main",
+                    "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.06) },
+                  }}
                 >
                   Start Shopping
                 </AppButton>
@@ -336,7 +400,14 @@ export default function Header() {
                   component={NextLinkComposed}
                   href="/login"
                   onClick={closeDrawer}
-                  sx={{ height: 46, borderRadius: 999, fontWeight: 950 }}
+                  sx={{
+                    height: 46,
+                    borderRadius: 999,
+                    fontWeight: 950,
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                    "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.92) },
+                  }}
                 >
                   Login
                 </AppButton>
@@ -347,7 +418,13 @@ export default function Header() {
                   component={NextLinkComposed}
                   href="/shop"
                   onClick={closeDrawer}
-                  sx={{ height: 46, borderRadius: 999, fontWeight: 900 }}
+                  sx={{
+                    height: 46,
+                    borderRadius: 999,
+                    fontWeight: 900,
+                    color: "primary.main",
+                    "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.06) },
+                  }}
                 >
                   Browse Products
                 </AppButton>
