@@ -10,3 +10,9 @@ class BrandListSerializers(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = '__all__'
+
+
+class ReviewSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
