@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'product',
 
     # Third party
+    'taggit',
+    
     # API
     'rest_framework',
     'rest_framework.authtoken',
