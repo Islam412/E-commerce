@@ -6,3 +6,10 @@ from .models import Product, ProductImage,Brand,Review
 # admin many image of product in same product
 class ProductImageTabular(admin.TabularInline):
     model = ProductImage
+
+
+class ProductAdmin(admin.ModelAdmin):
+        list_display = ['name','flag','price','quantity','brand']
+        list_filter = ['flag','brand']
+        search_fields = ['name','subtitle','descripition']
+        inlines = [ProductImageTabular]
