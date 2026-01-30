@@ -26,23 +26,23 @@ class ProductListAPI(generics.ListCreateAPIView):  # list show all dsta | create
     ordering_fields = ['price', 'quantity']
     filterset_class = ProductFilter
     pagination_class = CustomPagination
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class ProductDetailAPI(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializers
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class BrandListAPI(generics.ListCreateAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandListSerializers
     pagination_class = CustomPagination
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class BrandDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandDetailSerializers
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
