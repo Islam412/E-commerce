@@ -41,10 +41,10 @@ class ProductListSerializers(serializers.ModelSerializer):
 
 
 class ProductDetailSerializers(TaggitSerializer,serializers.ModelSerializer):
-    brand = BrandListSerializers()
+    brand = BrandListSerializers(read_only=True) 
     avg_rate = serializers.SerializerMethodField()
     review_count = serializers.SerializerMethodField()
-    review = ReviewSerializers(source='review_product',many=True)
+    review = ReviewSerializers(source='review_product',many=True,read_only=True)
     tags = TagListSerializerField() 
 
     class Meta:
