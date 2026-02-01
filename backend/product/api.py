@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 
-from .serializers import ProductListSerializers , ProductDetailSerializers , BrandListSerializers , BrandDetailSerializers , ProductImageSerializer
-from .models import Product , Brand , ProductImage
+from .serializers import ProductListSerializers , ProductDetailSerializers , BrandListSerializers , BrandDetailSerializers , ProductImageSerializer , ReviewSerializer
+from .models import Product , Brand , ProductImage , Review
 from .myfilter import ProductFilter
 
 
@@ -52,3 +52,12 @@ class ProductImageCreateAPI(generics.CreateAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsAuthenticated]
+
+
+class ReviewCreateAPI(generics.CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
