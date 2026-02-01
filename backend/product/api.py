@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 
-from .serializers import ProductListSerializers , ProductDetailSerializers , BrandListSerializers , BrandDetailSerializers
-from .models import Product , Brand
+from .serializers import ProductListSerializers , ProductDetailSerializers , BrandListSerializers , BrandDetailSerializers , ProductImageSerializer
+from .models import Product , Brand , ProductImage
 from .myfilter import ProductFilter
 
 
@@ -45,4 +45,10 @@ class BrandListAPI(generics.ListCreateAPIView):
 class BrandDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandDetailSerializers
+    permission_classes = [IsAuthenticated]
+
+
+class ProductImageCreateAPI(generics.CreateAPIView):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
     permission_classes = [IsAuthenticated]
