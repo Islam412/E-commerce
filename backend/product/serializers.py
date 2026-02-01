@@ -3,7 +3,7 @@ from rest_framework import serializers
 from taggit.serializers import TagListSerializerField , TaggitSerializer
 
 
-from .models import Product , Brand , Review
+from .models import Product , Brand , Review , ProductImage
 
 
 class BrandListSerializers(serializers.ModelSerializer):
@@ -74,3 +74,11 @@ class ProductCartSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['name','image','price']
+
+
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = '__all__'
